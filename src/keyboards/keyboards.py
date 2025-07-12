@@ -26,3 +26,10 @@ def options_kb():
         resize_keyboard=True,
         one_time_keyboard=True
     )
+
+
+def new_calc_kb():
+    return ReplyKeyboardMarkup(
+        keyboard=[[KeyboardButton(text="Рассчитать новую штору")]],
+        resize_keyboard=True
+    )

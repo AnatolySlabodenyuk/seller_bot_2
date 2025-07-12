@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import Message, ReplyKeyboardRemove
 from lexicon.lexicon_ru import LEXICON_RU
-from keyboards.keyboards import materials_kb, options_kb, MATERIALS, OPTIONS
+from keyboards.keyboards import materials_kb, options_kb, MATERIALS, OPTIONS, new_calc_kb
 from services.calc import calc
 
 router = Router()
@@ -78,7 +78,7 @@ async def get_options(msg: Message, state: FSMContext):
                     opts=opts,
                     total=res['total']
                 ),
-                reply_markup=ReplyKeyboardRemove()
+                reply_markup=new_calc_kb()
             )
             await state.clear()
         except ValueError as e:
@@ -91,3 +91,9 @@ async def get_options(msg: Message, state: FSMContext):
         await msg.answer(LEXICON_RU['option_added'].format(option=msg.text), reply_markup=options_kb())
     else:
         await msg.answer(LEXICON_RU['option_error'])
+
+
+@router.message(F.text == "Рассчитать новую штору")
+async def new_calc(msg: Message, state: FSMContext):
+    await state.set_state(CurtainForm.material)
+    await msg.answer(LEXICON_RU['start'], reply_markup=materials_kb())
