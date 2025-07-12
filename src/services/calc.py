@@ -1,10 +1,12 @@
-from services.stripes import get_stripes, ROLL_WIDTH
+from services.stripes import get_full_width_and_stripes
 from keyboards.keyboards import MATERIALS, OPTIONS
 
 
 def calc(width, height, material, options):
-    stripes = get_stripes(width)
-    full_width = stripes * ROLL_WIDTH
+    full_width_and_stripes_tuple = get_full_width_and_stripes(width)
+
+    full_width = full_width_and_stripes_tuple[0]
+    stripes = full_width_and_stripes_tuple[1]
     area = full_width * height
     price_per_m2 = {
         MATERIALS[0]: 300,

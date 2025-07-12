@@ -1,4 +1,6 @@
 # Таблица: кортежи (максимальная ширина, количество полос)
+from typing import Any
+
 WIDTH_THRESHOLDS = [
     (0.8, 1),
     (1.2, 1.5),
@@ -19,14 +21,13 @@ WIDTH_THRESHOLDS = [
     (7.9, 9)
 ]
 
-ROLL_WIDTH = 0.9  # ширина одной полосы
 
 
-def get_stripes(width: float) -> float:
+def get_full_width_and_stripes(width: float) -> tuple[Any, Any]:
     """
     Возвращает минимальное количество полос, достаточное для заданной ширины изделия.
     """
     for threshold_width, stripes in WIDTH_THRESHOLDS:
         if width <= threshold_width:
-            return stripes
+            return threshold_width, stripes
     raise ValueError("Ширина превышает максимально допустимую")
