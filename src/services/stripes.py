@@ -22,11 +22,11 @@ WIDTH_THRESHOLDS = [
 ROLL_WIDTH = 0.9  # ширина одной полосы
 
 
-def get_stripes(width: float) -> int:
+def get_stripes(width: float) -> float:
     """
     Возвращает минимальное количество полос, достаточное для заданной ширины изделия.
     """
     for threshold_width, stripes in WIDTH_THRESHOLDS:
         if width <= threshold_width:
-            return int(round(stripes))
+            return stripes
     raise ValueError("Ширина превышает максимально допустимую")
