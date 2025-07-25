@@ -1,30 +1,19 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-MATERIALS = [
-    "Без утепления (однослойная штора)",
-    "Стёганый синтепон",
-    "Синтепон + стёганый синтепон",
-    "Синтепон + брезент",
-]
+from services.price import MATERIAL_PRICES
 
-OPTIONS = ["Молния по центру", "Люверсы"]
+MATERIALS = [
+    f"Без утепления (однослойная штора): {MATERIAL_PRICES[0]} ₽",
+    f"Стёганый синтепон: {MATERIAL_PRICES[1]} ₽",
+    f"Синтепон + стёганый синтепон: {MATERIAL_PRICES[2]} ₽",
+    f"Синтепон + брезент: {MATERIAL_PRICES[3]} ₽",
+]
 
 
 def materials_kb():
     return ReplyKeyboardMarkup(
         keyboard=[[KeyboardButton(text=m)] for m in MATERIALS],
         resize_keyboard=True
-    )
-
-
-def options_kb():
-    return ReplyKeyboardMarkup(
-        keyboard=[
-            [KeyboardButton(text=o) for o in OPTIONS],
-            [KeyboardButton(text="Готово")]
-        ],
-        resize_keyboard=True,
-        one_time_keyboard=True
     )
 
 
