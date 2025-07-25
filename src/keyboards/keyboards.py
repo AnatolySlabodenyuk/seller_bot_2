@@ -19,6 +19,9 @@ def materials_kb():
 
 def new_calc_kb():
     return ReplyKeyboardMarkup(
-        keyboard=[[KeyboardButton(text="Рассчитать новую штору")]],
+        keyboard=[
+            [KeyboardButton(text="💰 Рассчитать новую штору")],
+            [KeyboardButton(text="📞 Написать продавцу")]
+        ],
         resize_keyboard=True
     )
