@@ -3,6 +3,8 @@ from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import Message, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
+
+from lexicon.buttons_enum import ButtonsEnum
 from lexicon.lexicon_ru import LEXICON_RU
 from keyboards.keyboards import materials_kb, MATERIALS, new_calc_kb
 from services.calc import calc
@@ -84,7 +86,7 @@ async def get_width(msg: Message, state: FSMContext):
         await state.clear()
 
 
-@router.message(F.text == "📞 Написать продавцу")
+@router.message(F.text == ButtonsEnum.CALL_TO_SELLER_BUTTON.value)
 async def contact_seller(msg: Message, state: FSMContext):
     # Получаем данные последнего расчета из состояния
     data = await state.get_data()
@@ -96,7 +98,7 @@ async def contact_seller(msg: Message, state: FSMContext):
     # Создаем inline кнопку для перехода к продавцу
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="📞 Написать продавцу", url=f"https://t.me/{SELLER_LOGIN}")]
+            [InlineKeyboardButton(text=ButtonsEnum.CALL_TO_SELLER_BUTTON.value, url=f"https://t.me/{SELLER_LOGIN}")]
         ]
     )
 
@@ -117,7 +119,7 @@ async def contact_seller(msg: Message, state: FSMContext):
     )
 
 
-@router.message(F.text == "💰 Рассчитать новую штору")
+@router.message(F.text == ButtonsEnum.RESTART_BUTTON.value)
 async def new_calc(msg: Message, state: FSMContext):
     await state.clear()
     await state.set_state(CurtainForm.material)

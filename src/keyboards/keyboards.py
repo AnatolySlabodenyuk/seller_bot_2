@@ -1,5 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
+from lexicon.buttons_enum import ButtonsEnum
 from services.price import MATERIAL_PRICES
 
 MATERIALS = [
@@ -20,8 +21,8 @@ def materials_kb():
 def new_calc_kb():
     return ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text="💰 Рассчитать новую штору")],
-            [KeyboardButton(text="📞 Написать продавцу")]
+            [KeyboardButton(text=ButtonsEnum.RESTART_BUTTON.value)],
+            [KeyboardButton(text=ButtonsEnum.CALL_TO_SELLER_BUTTON.value)]
         ],
         resize_keyboard=True
     )
