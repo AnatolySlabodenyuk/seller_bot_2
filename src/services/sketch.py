@@ -1,3 +1,5 @@
+import os
+
 from PIL import Image, ImageDraw, ImageFont
 import io
 
@@ -6,6 +8,7 @@ def generate_curtain_sketch(width_m, height_m, grommet_step_cm=30, grommet_diame
     """
     Генерирует изображение шторы с размерами, шагом и количеством люверсов.
     """
+    font_path = os.path.join(os.path.dirname(__file__), "..", "fonts", "arial.ttf")
     # Размер холста
     img_w, img_h = 800, 1000
     margin_top = 140
@@ -68,8 +71,8 @@ def generate_curtain_sketch(width_m, height_m, grommet_step_cm=30, grommet_diame
 
     # Шрифты
     try:
-        font = ImageFont.truetype("arial.ttf", 48)
-        font_small = ImageFont.truetype("arial.ttf", 32)
+        font = ImageFont.truetype(font_path, 48)
+        font_small = ImageFont.truetype(font_path, 32)
     except:
         font = ImageFont.load_default()
         font_small = ImageFont.load_default()
