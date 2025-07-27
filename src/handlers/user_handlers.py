@@ -9,7 +9,7 @@ from lexicon.lexicon_ru import LEXICON_RU
 from keyboards.keyboards import materials_kb, MATERIALS, new_calc_kb
 from services.calc import calc
 from config_data.config import SELLER_LOGIN
-from src.services.sketch import generate_curtain_sketch
+from services.sketch import generate_curtain_sketch
 
 router = Router()
 
