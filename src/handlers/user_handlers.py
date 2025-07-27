@@ -2,13 +2,14 @@ from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.types import Message, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import Message, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup, BufferedInputFile
 
 from lexicon.buttons_enum import ButtonsEnum
 from lexicon.lexicon_ru import LEXICON_RU
 from keyboards.keyboards import materials_kb, MATERIALS, new_calc_kb
 from services.calc import calc
 from config_data.config import SELLER_LOGIN
+from src.services.sketch import generate_curtain_sketch
 
 router = Router()
 
@@ -81,6 +82,10 @@ async def get_width(msg: Message, state: FSMContext):
             ),
             reply_markup=new_calc_kb()
         )
+        # Отправляем экскиз шторы
+        sketch = generate_curtain_sketch(res['width'], res['height'])
+        photo = BufferedInputFile(sketch.getvalue(), filename="sketch.png")
+        await msg.answer_photo(photo, caption="Экскиз вашей шторы")
     except ValueError as e:
         await msg.answer(f"Ошибка: {e}. Максимальная ширина: 7.9 м", reply_markup=ReplyKeyboardRemove())
         await state.clear()
