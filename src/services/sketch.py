@@ -23,6 +23,17 @@ def draw_dashed_line(draw, xy, dash_length=8, gap_length=6, width=1, fill="black
             draw.line([(start, y0), (end, y1)], fill=fill, width=width)
 
 
+def calc_grommet_count(width_m, grommet_diameter_mm, grommet_step_cm):
+    grommet_diameter_m = grommet_diameter_mm / 1000
+    grommet_step_m = grommet_step_cm / 100
+    available_width = width_m - grommet_diameter_m
+    if available_width <= 0:
+        return 2
+    num_intervals = available_width / grommet_step_m
+    grommet_count = int(round(num_intervals)) + 1
+    return max(2, grommet_count)
+
+
 def generate_curtain_sketch(
         width_m,
         height_m,
@@ -105,16 +116,22 @@ def generate_curtain_sketch(
         font = ImageFont.load_default()
         font_small = ImageFont.load_default()
 
-    # Размеры (см выше)
+    # Надпись высоты
     height_text = f"{height_m:.2f}"
     bbox_h = draw.textbbox((0, 0), height_text, font=font)
     text_w_h = bbox_h[2] - bbox_h[0]
     text_h_h = bbox_h[3] - bbox_h[1]
     draw.text((x0 - text_w_h - 20, (y0 + y1) // 2 - text_h_h // 2), height_text, fill='black', font=font)
 
+    # Надпись ширины
+    width_text = f"{width_m:.2f}"
+    bbox_w = draw.textbbox((0, 0), width_text, font=font)
+    text_w_w = bbox_w[2] - bbox_w[0]
+    draw.text(((x0 + x1) // 2 - text_w_w // 2, y1 + 10), width_text, fill='black', font=font)
+
     # Верхняя подпись
     grommet_bar_h = 50
-    top_text = f"Шаг люверсов +/-{grommet_step_cm} см, диаметр {grommet_diameter_mm} мм"
+    top_text = f"Шаг люверсов +/- {grommet_step_cm} см, диаметр {grommet_diameter_mm} мм"
     bbox_top = draw.textbbox((0, 0), top_text, font=font_small)
     top_w = bbox_top[2] - bbox_top[0]
     draw.text(
@@ -122,10 +139,15 @@ def generate_curtain_sketch(
         top_text, fill='black', font=font_small
     )
 
-    width_text = f"{width_m:.2f}"
-    bbox_w = draw.textbbox((0, 0), width_text, font=font)
-    text_w_w = bbox_w[2] - bbox_w[0]
-    draw.text(((x0 + x1) // 2 - text_w_w // 2, y1 + 10), width_text, fill='black', font=font)
+    # Нижняяя подпись
+    grommet_count_auto = calc_grommet_count(width_m, grommet_diameter_mm, grommet_step_cm)
+    grommet_info = f"Люверсов +/- {grommet_count_auto}"
+    bbox_g = draw.textbbox((0, 0), grommet_info, font=font_small)
+    g_w = bbox_g[2] - bbox_g[0]
+    draw.text(
+        ((img_w - g_w) // 2, y0 + grommet_bar_h + 30),
+        grommet_info, fill='black', font=font_small
+    )
 
     # Сохраняем
     output = io.BytesIO()
